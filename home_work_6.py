@@ -104,3 +104,7 @@ def extract_login_domain(address: str) -> tuple[str, str]:
     domain = email["to"].split("@")[1]
 
     return login, domain
+
+## Часть B. Отправка письма
+
+
