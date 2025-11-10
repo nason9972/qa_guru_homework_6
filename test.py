@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 # Часть A
-
+# Нормализация email адресов
 def normalize_addresses(email_dict):
     new_dict = email_dict.copy()
     if 'from' in new_dict:
@@ -12,37 +12,39 @@ def normalize_addresses(email_dict):
         new_dict['to'] = new_dict['to'].lower().strip()
     return new_dict
 
-
+#Сокращенная версия тела письма
 def add_short_body(email_dict):
     new_dict = email_dict.copy()
     text = new_dict.get('body', '')
     new_dict['short_body'] = text[:10] + "..."
     return new_dict
 
-
+# Очистка текста письма
 def clean_body_text(text):
     text = text.replace("\t", " ")
     text = text.replace("\n", " ")
     return text
 
-
+#Формирование итогового текста письма
 def build_sent_text(email_dict):
     result = f"Кому: {email_dict['to']}, от {email_dict['from']}\n"
     result += f"Тема: {email_dict['subject']}, дата {email_dict['date']}\n"
     result += f"{email_dict['clean_body']}"
     return result
 
-
+#Проверка пустоты темы и тела
 def check_empty_fields(email_dict):
     subject_empty = not email_dict.get('subject', '').strip()
     body_empty = not email_dict.get('body', '').strip()
     return subject_empty, body_empty
 
-
+#Маска email отправителя
 def mask_sender_email(login, domain):
     return f"{login[:2]}***@{domain}"
 
-
+#Создать функцию которая проверит корректности email адресов. Адрес считается корректным, если:
+#Eсодержит символ @;
+#оканчивается на один из доменов: .com, .ru, .net.
 def get_correct_email(emails_list):
     good_emails = []
     for email in emails_list:
@@ -51,7 +53,7 @@ def get_correct_email(emails_list):
             good_emails.append(email)
     return good_emails
 
-
+#Создание словаря письма
 def create_email(sender, recipient, subject, body):
     return {
         'sender': sender,
@@ -67,7 +69,7 @@ def add_send_date(email_dict):
     new_dict['date'] = today.strftime("%Y-%m-%d")
     return new_dict
 
-
+#Добавление даты отправки
 def extract_login_domain(email):
     parts = email.split('@')
     return parts[0], parts[1]
